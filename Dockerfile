@@ -17,4 +17,4 @@ COPY . .
 EXPOSE 5000
 
 # Run the application
-CMD ["python", "main.py"]
+CMD ["python", "taipy run main.py"]
