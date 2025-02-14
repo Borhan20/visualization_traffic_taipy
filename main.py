@@ -181,5 +181,5 @@ Gui(page=page).run(
         "selected_os": selected_os,
         "selected_browsers": selected_browsers,
         "browser_chart_data": browser_chart_data
-    }
+    },
 )

@@ -1,21 +1,34 @@
-# Use an official Python image as a parent image
-FROM python:3.10
+FROM python:3.10-slim 
 
-# Set the working directory in the container
-WORKDIR /app
+WORKDIR /app 
 
-# Copy the requirements file into the container
+#Install system dependencies 
+Run apt-get update && apt-get install -y --no-install-recommends \
+    fonts-dejavu-core \
+    && rm -rf /var/lib/apt/lists/*
+
+#Copy requirements 
 COPY requirements.txt .
-
-# Install dependencies
 RUN pip install --no-cache-dir -r requirements.txt
 
-# Copy the rest of the application code
-COPY . .
+#Copy application files 
+COPY main.py ./
+COPY data/ ./data/ 
 
-# Expose the port the app runs on
-EXPOSE 8080
+#Create a startup script that properly handles Taipy gui 
+RUN echo '#!/bin/bash\n\
+export TAIPY_GUI_PORT=5000\n\
+export TAIPY_GUI_HOST="0.0.0.0"\n\
+taipy run main.py --port 5000 --host "0.0.0.0"' > /app/start.sh && \
+chmod +x /app/start.sh 
 
-# Run the application
-CMD ["python", "main.py"]
+#Expose ports 
+EXPOSE 5000
 
+#Set environment variables for container networking 
+ENV HOST="0.0.0.0"
+ENV TAIPY_GUI_PORT=5000
+ENV TAIPY_GUI_HOST="0.0.0.0"
+
+# Run the startup script
+CMD ["/app/start.sh"]
