@@ -175,3 +175,6 @@ test.py
 .test
 test2.py
 .test2 
+notebook 
+./notebook/
+/notebook/
