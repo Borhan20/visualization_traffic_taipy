@@ -1,0 +1,13 @@
+version: "3.8"
+
+services:
+  taipy-app:
+    build: .
+    container_name: taipy_app
+    ports:
+      - "5000:5000"
+    volumes:
+      - .:/app
+    environment:
+      - PYTHONUNBUFFERED=1
+    restart: unless-stopped
